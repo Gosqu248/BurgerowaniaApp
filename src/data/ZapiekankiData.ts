@@ -1,0 +1,43 @@
+const ZapiekankiData= [
+    {
+        id: 'Z1',
+        type: 'Zapiekanki',
+        name: 'Klasyczna',
+        composition: 'Bułka, Pieczarki, Ser mozzarella, Ketchup, Szczypiorek',
+        imagelink_square: require('../assets/meals_assets/burger/portrait/burger.jpg'),
+        imagelink_portrait: require('../assets/meals_assets/burger/portrait/burger.jpg'),
+        price: '16',
+        average_rating: 4.7,
+        ratings_count: '6,879',
+        favourite: false,
+        index: 0,
+    },
+    {
+        id: 'Z2',
+        type: 'Zapiekanki',
+        name: 'Swojska',
+        composition: 'Bułka, Boczek, Ser mozzarella, Kiełbasa, Pieczarki, Ketchup ',
+        imagelink_square: require('../assets/meals_assets/burger/portrait/burger.jpg'),
+        imagelink_portrait: require('../assets/meals_assets/burger/portrait/burger.jpg'),
+        price: '18',
+        average_rating: 4.7,
+        ratings_count: '6,879',
+        favourite: false,
+        index: 1,
+    },
+    {
+        id: 'Z3',
+        type: 'Zapiekanki',
+        name: 'Ostra',
+        composition: 'Bułka, Salami, Ser mozzarella, Pieczarki, Papryczki jalapeno, Piri-piri, Ketchup',
+        imagelink_square: require('../assets/meals_assets/burger/portrait/burger.jpg'),
+        imagelink_portrait: require('../assets/meals_assets/burger/portrait/burger.jpg'),
+        price: '18',
+        average_rating: 4.7,
+        ratings_count: '6,879',
+        favourite: false,
+        index: 2,
+    },
+];
+
+export default ZapiekankiData;
