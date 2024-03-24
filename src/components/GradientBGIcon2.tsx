@@ -2,16 +2,16 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { COLORS, SPACING } from '../theme/theme';
-import Icons from 'react-native-vector-icons/Entypo'
 import AntIcons from 'react-native-vector-icons/AntDesign'
 
-interface GradientBGIconProps {
+interface GradientBGIconProps2 {
     name: string;
     color: string;
     size: number;
 }
 
-const GradientBGIcon: React.FC<GradientBGIconProps> = ({name, color, size}) => {
+
+const GradientBGIcon2: React.FC<GradientBGIconProps2> = ({name, color, size}) => {
     return(
         <View style={styles.Container}>
             <LinearGradient 
@@ -19,14 +19,11 @@ const GradientBGIcon: React.FC<GradientBGIconProps> = ({name, color, size}) => {
                 end={{x: 1, y: 1}}
                 colors={[COLORS.primaryGreyHex, COLORS.primaryBlackHex]}
                 style={styles.LinearGradient}>
-                <Icons name={name} color={color} size={size} />
+                <AntIcons name={name} color={color} size={size} />
             </LinearGradient>    
         </View>
     );
 };
-
-
-
 
 const styles = StyleSheet.create({
     Container: {
@@ -46,6 +43,6 @@ const styles = StyleSheet.create({
     },
 });
 
-export default GradientBGIcon;
+export default GradientBGIcon2;
 
 

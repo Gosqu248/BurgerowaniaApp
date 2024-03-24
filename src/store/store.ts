@@ -19,145 +19,179 @@ export const useStore = create(
     (set, get) => ({
       BurgerList: BurgerData,
       PizzaList: PizzaData,
-      KidsList: KidsData,
       ZapiekankiList: ZapiekankiData,
-      DodatkiList: DodatkiData,
       StekiList: StekiData,
-      SosyList: SosyData,
+      KebabyList: KebabData,
+      KidsList: KidsData,
       SalatkiList: SalatkiData,
       NapojeList: NapojeData,
-      KebabyList: KebabData,
       MustTasteList: MustTasteData,
+      DodatkiList: DodatkiData,
+      SosyList: SosyData,
+
+      
+
       FoodList: Object.values({
         BurgerData,
         PizzaData,
-        KidsData,
         ZapiekankiData,
-        DodatkiData,
         StekiData,
-        SosyData,
+        KebabData,
+        KidsData,
         SalatkiData,
         NapojeData,
-        KebabData,
         MustTasteData,
+        DodatkiData,
+        SosyData,
       }).flat(),
-      
 
       CartPrice: 0,
       FavoritesList: [],
       CartList: [],
       OrderHistoryList: [],
-      addToCart: (cartItem: any) =>
-        set(
-          produce(state => {
-            let found = false;
-            for (let i = 0; i < state.CartList.length; i++) {
-              if (state.CartList[i].id == cartItem.id) {
-                found = true;
-                let size = false;
-                for (let j = 0; j < state.CartList[i].prices.length; j++) {
-                  if (
-                    state.CartList[i].price.size == cartItem.price.size
-                  ) {
-                    size = true;
-                    state.CartList[i].price.quantity++;
-                    break;
-                  }
-                }
-                if (size == false) {
-                  state.CartList[i].price.push(cartItem.price);
-                }
-                state.CartList[i].price.sort((a: any, b: any) => {
-                  if (a.size > b.size) {
-                    return -1;
-                  }
-                  if (a.size < b.size) {
-                    return 1;
-                  }
-                  return 0;
-                });
-                break;
-              }
+
+
+          addToCart: (cartItem: any) =>
+      set(
+        produce(state => {
+          let found = false;
+          for (let i = 0; i < state.CartList.length; i++) {
+            if (state.CartList[i].id == cartItem.id) {
+              found = true;
+              state.CartList[i].quantity++;
+              break;
             }
-            if (found == false) {
-              state.CartList.push(cartItem);
-            }
-          }),
-        ),
+          }
+          if (!found) {
+            state.CartList.push({ ...cartItem, quantity: 1 });
+          }
+        })
+      ),
+
       calculateCartPrice: () =>
-        set(
-          produce(state => {
-            let totalprice = 0;
-            for (let i = 0; i < state.CartList.length; i++) {
-              let tempprice = 0;
-              for (let j = 0; j < state.CartList[i].prices.length; j++) {
-                tempprice =
-                  tempprice +
-                  parseFloat(state.CartList[i].prices[j].price) *
-                    state.CartList[i].prices[j].quantity;
-              }
-              state.CartList[i].ItemPrice = tempprice.toFixed(2).toString();
-              totalprice = totalprice + tempprice;
-            }
-            state.CartPrice = totalprice.toFixed(2).toString();
-          }),
-        ),
+      set(
+        produce(state => {
+          let totalPrice = 0;
+          for (let i = 0; i < state.CartList.length; i++) {
+            let itemPrice = parseFloat(state.CartList[i].price) * state.CartList[i].quantity;
+            state.CartList[i].ItemPrice = itemPrice.toFixed(2).toString();
+            totalPrice += itemPrice;
+          }
+          state.CartPrice = totalPrice.toFixed(2).toString();
+        })
+      ),
+
       addToFavoriteList: (type: string, id: string) =>
         set(
           produce(state => {
-            if (type == 'Coffee') {
-              for (let i = 0; i < state.CoffeeList.length; i++) {
-                if (state.CoffeeList[i].id == id) {
-                  if (state.CoffeeList[i].favourite == false) {
-                    state.CoffeeList[i].favourite = true;
-                    state.FavoritesList.unshift(state.CoffeeList[i]);
+            let list;
+                  switch (type) {
+                    case 'Burgery':
+                      list = state.BurgerList;
+                      break;
+                    case 'Pizza 30cm':
+                      list = state.PizzaList;
+                      break;
+                    case 'Zapiekanki':
+                      list = state.ZapiekankiList;
+                      break;
+                    case 'Steki':
+                      list = state.StekiList;
+                      break;
+                    case 'Kebaby':
+                      list = state.KebabyList;
+                      break;
+                    case 'Kids':
+                      list = state.KidsList;
+                      break;
+                    case 'Sałatki':
+                      list = state.SalatkiList;
+                      break;
+                    case 'Napoje':
+                      list = state.NapojeList;
+                      break;
+                    case 'Tego musisz spróbować':
+                      list = state.MustTasteList;
+                      break;
+                    case 'Dodatki':
+                      list = state.DodatkiList;
+                      break;
+                    case 'Sosy':
+                      list = state.SosyList;
+                      break;
+                    default:
+                      return;
+                  }
+
+              for (let i = 0; i < list.length; i++) {
+                if (list[i].id == id) {
+                  if (list[i].favourite == false) {
+                    list[i].favourite = true;
+                    state.FavoritesList.unshift(list[i]);
                   } else {
-                    state.CoffeeList[i].favourite = false;
+                    list[i].favourite = false;
                   }
                   break;
                 }
               }
-            } else if (type == 'Bean') {
-              for (let i = 0; i < state.BeanList.length; i++) {
-                if (state.BeanList[i].id == id) {
-                  if (state.BeanList[i].favourite == false) {
-                    state.BeanList[i].favourite = true;
-                    state.FavoritesList.unshift(state.BeanList[i]);
-                  } else {
-                    state.BeanList[i].favourite = false;
-                  }
-                  break;
-                }
-              }
-            }
+            
           }),
         ),
+
       deleteFromFavoriteList: (type: string, id: string) =>
         set(
           produce(state => {
-            if (type == 'Coffee') {
-              for (let i = 0; i < state.CoffeeList.length; i++) {
-                if (state.CoffeeList[i].id == id) {
-                  if (state.CoffeeList[i].favourite == true) {
-                    state.CoffeeList[i].favourite = false;
+
+            let list;
+                  switch (type) {
+                    case 'Burgery':
+                      list = state.BurgerList;
+                      break;
+                    case 'Pizza 30cm':
+                      list = state.PizzaList;
+                      break;
+                    case 'Zapiekanki':
+                      list = state.ZapiekankiList;
+                      break;
+                    case 'Steki':
+                      list = state.StekiList;
+                      break;
+                    case 'Kebaby':
+                      list = state.KebabyList;
+                      break;
+                    case 'Kids':
+                      list = state.KidsList;
+                      break;
+                    case 'Sałatki':
+                      list = state.SalatkiList;
+                      break;
+                    case 'Napoje':
+                      list = state.NapojeList;
+                      break;
+                    case 'Tego musisz spróbować':
+                      list = state.MustTasteList;
+                      break;
+                    case 'Dodatki':
+                      list = state.DodatkiList;
+                      break;
+                    case 'Sosy':
+                      list = state.SosyList;
+                      break;
+                    default:
+                      return;
+                  }
+            
+              for (let i = 0; i < list.length; i++) {
+                if (list[i].id == id) {
+                  if (list[i].favourite == true) {
+                    list[i].favourite = false;
                   } else {
-                    state.CoffeeList[i].favourite = true;
+                    list[i].favourite = true;
                   }
                   break;
                 }
               }
-            } else if (type == 'Beans') {
-              for (let i = 0; i < state.BeanList.length; i++) {
-                if (state.BeanList[i].id == id) {
-                  if (state.BeanList[i].favourite == true) {
-                    state.BeanList[i].favourite = false;
-                  } else {
-                    state.BeanList[i].favourite = true;
-                  }
-                  break;
-                }
-              }
-            }
+            
             let spliceIndex = -1;
             for (let i = 0; i < state.FavoritesList.length; i++) {
               if (state.FavoritesList[i].id == id) {
@@ -168,19 +202,16 @@ export const useStore = create(
             state.FavoritesList.splice(spliceIndex, 1);
           }),
         ),
+
       incrementCartItemQuantity: (id: string, size: string) =>
         set(
           produce(state => {
             for (let i = 0; i < state.CartList.length; i++) {
               if (state.CartList[i].id == id) {
-                for (let j = 0; j < state.CartList[i].prices.length; j++) {
-                  if (state.CartList[i].prices[j].size == size) {
-                    state.CartList[i].prices[j].quantity++;
+                    state.CartList[i].quantity++;
                     break;
                   }
                 }
-              }
-            }
           }),
         ),
       decrementCartItemQuantity: (id: string, size: string) =>
@@ -188,25 +219,19 @@ export const useStore = create(
           produce(state => {
             for (let i = 0; i < state.CartList.length; i++) {
               if (state.CartList[i].id == id) {
-                for (let j = 0; j < state.CartList[i].prices.length; j++) {
-                  if (state.CartList[i].prices[j].size == size) {
-                    if (state.CartList[i].prices.length > 1) {
-                      if (state.CartList[i].prices[j].quantity > 1) {
-                        state.CartList[i].prices[j].quantity--;
+                      if (state.CartList[i].quantity > 1) {
+                        state.CartList[i].quantity--;
                       } else {
-                        state.CartList[i].prices.splice(j, 1);
+                        state.CartList[i].price.splice(i, 1);
                       }
                     } else {
-                      if (state.CartList[i].prices[j].quantity > 1) {
-                        state.CartList[i].prices[j].quantity--;
+                      if (state.CartList[i].quantity > 1) {
+                        state.CartList[i].quantity--;
                       } else {
                         state.CartList.splice(i, 1);
                       }
                     }
                     break;
-                  }
-                }
-              }
             }
           }),
         ),

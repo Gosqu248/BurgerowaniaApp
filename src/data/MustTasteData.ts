@@ -1,7 +1,7 @@
 const MustTasteData= [
     {
         id: 'M1',
-        type: 'Tego musisz sróbować',
+        type: 'Tego musisz spróbować',
         name: 'Herbata Rozgrzewająca',
         composition: 'Herbata, Maliny, Imbir, Goździki, Cynamon, Pomarańcz, Cytryna, Sok malinowy',
         imagelink_square: require('../assets/meals_assets/burger/portrait/burger.jpg'),
@@ -14,7 +14,7 @@ const MustTasteData= [
     },
     {
         id: 'M2',
-        type: 'Tego musisz sróbować',
+        type: 'Tego musisz spróbować',
         name: 'Herbata Wiśniowo-Migdałowa',
         composition: 'Herbata, Puree wiśniowa, Syrop migdałowy, Wiśnie, Rozmaryn, Grejpfrut',
         imagelink_square: require('../assets/meals_assets/burger/portrait/burger.jpg'),
@@ -27,7 +27,7 @@ const MustTasteData= [
     },
     {
         id: 'M3',
-        type: 'Tego musisz sróbować',
+        type: 'Tego musisz spróbować',
         name: 'Latte "Marzenie Jesieniary"',
         composition: '',
         imagelink_square: require('../assets/meals_assets/burger/portrait/burger.jpg'),
@@ -40,7 +40,7 @@ const MustTasteData= [
     },
     {
         id: 'M4',
-        type: 'Tego musisz sróbować',
+        type: 'Tego musisz spróbować',
         name: 'Lemoniada Jesienna na Ciepło',
         composition: '',
         imagelink_square: require('../assets/meals_assets/burger/portrait/burger.jpg'),

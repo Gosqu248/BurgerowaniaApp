@@ -1,5 +1,5 @@
 import React, {useState, useRef} from 'react';
-import { StatusBar, StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput, TextBase} from 'react-native';
+import { StatusBar, StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput, TextBase, Dimensions, ToastAndroid} from 'react-native';
 import Icons from 'react-native-vector-icons/AntDesign';
 import {useStore} from '../store/store';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
@@ -7,6 +7,7 @@ import { BORDERRADIUS, COLORS, FONTFAMILY, FONTSIZE, SPACING } from '../theme/th
 import {FlatList} from 'react-native';
 import HeaderBar from '../components/HeaderBar';
 import FoodCard from '../components/FoodCard';
+import TabNavigator from '../navigator/TabNavigator';
 
 const getCategoriesFromData = (data: any) => {
     let temp:any = {};
@@ -45,8 +46,9 @@ const HomeScreen = ({navigation}: any) => {
     const MustTasteList = useStore((state: any) => state.MustTasteList);
     const DodatkiList = useStore((state: any) => state.DodatkiList);
     const SosyList = useStore((state: any) => state.SosyList);
+
     const FoodList = useStore((state: any) => state.FoodList);
-    
+
 
     const [categories, setCategories] = useState(
         getCategoriesFromData(FoodList),
@@ -61,11 +63,90 @@ const HomeScreen = ({navigation}: any) => {
         getFoodList(categoryIndex.category, FoodList)
     );
 
-    
-
     const tabBarHeight = useBottomTabBarHeight();
 
-    console.log("NazwaPizzy= ", categoryIndex);
+    const addToCart = useStore((state: any) => state.addToCart);
+    const calculateCartPrice = useStore((state: any) => state.calculateCartPrice);
+
+    const addToCartHandler = ({
+        id, 
+        index, 
+        name, 
+        stage, 
+        imagelink_square, 
+        composition,
+        type,
+        price,
+    
+    }: any) => {
+        addToCart({
+            id, 
+            index, 
+            name, 
+            stage, 
+            imagelink_square, 
+            composition,
+            type,
+            price,
+        });
+        calculateCartPrice();
+        ToastAndroid.showWithGravity(
+            name + " został dodany do koszyka", 
+            ToastAndroid.SHORT, 
+            ToastAndroid.CENTER
+            );
+    };
+
+
+    const renederFoodSection = (dataList: any) => {
+        if (!dataList.some((item: { type: string; }) => categoryIndex.category === "All" || categoryIndex.category === item.type)) {            
+            return null; 
+        }
+    
+        return (
+            <React.Fragment>
+                <Text style={[styles.FoodTitle,
+                        categoryIndex.category === "All" ? {marginTop: 52} : null
+                    ]}>{dataList[0].type}</Text>
+
+                <FlatList
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    data={dataList}
+                    contentContainerStyle={styles.FlatListContainer}
+                    keyExtractor={item => item.id}
+                    renderItem={({item}) => {
+                            return (
+                                <TouchableOpacity onPress={() => {
+                                    navigation.navigate('Details', {
+                                        index: item.index, 
+                                        id: item.id, 
+                                        type: item.type, 
+                                        });
+                                }}>
+                                    <FoodCard
+                                        id={item.id}
+                                        index={item.index}
+                                        type={item.type}
+                                        stage={item.stage}
+                                        imagelink_square={item.imagelink_square}
+                                        name={item.name}
+                                        average_rating={item.average_rating}
+                                        price={item.price}
+                                        buttonPressHandler={addToCartHandler}
+                                    />
+                                </TouchableOpacity>
+                            );
+                    }}
+                />
+            </React.Fragment>
+        );
+    };
+    
+    
+
+    //console.log("NazwaPizzy= ", FoodList);
+
 
     return(
         <View style={styles.ScreenContainer}>
@@ -77,8 +158,10 @@ const HomeScreen = ({navigation}: any) => {
 
                 <Text style={styles.TextFind}> Find the best {'\n'} food for you</Text>
             
+            {/*
                 <View style={styles.InputContainerComponent}>
-                    <TouchableOpacity onPress={() => {}}>
+                    <TouchableOpacity onPress={() => {
+                    }}>
                         <Icons 
                             style={styles.InputIcon}
                             name="search1" 
@@ -97,7 +180,23 @@ const HomeScreen = ({navigation}: any) => {
                         placeholderTextColor={COLORS.primaryLightGreyHex}
                         style={styles.TextInputContainer}
                     />
+
+                    { searchText.length > 0 ? (
+                        <TouchableOpacity onPress={() => {
+                        }}>
+                            <Icons 
+                                style= {styles.InputIcon}
+                                name ="close" 
+                                size={FONTSIZE.size_16}
+                                color={COLORS.primaryLightGreyHex}
+
+                            />
+                        </TouchableOpacity>
+                    ) : (
+                        <></>
+                    )}
                 </View>
+                    */ }
             
                 <ScrollView
                  horizontal
@@ -108,6 +207,7 @@ const HomeScreen = ({navigation}: any) => {
                          key={index.toString()} 
                          style={styles.CategoryScrollViewContainer}>
                             <TouchableOpacity style={styles.CategoryScrollViewItem} onPress={() => {
+                                
                                 setCategoryIndex({index: index, category: categories[index]});
                                 setSortedFood([
                                  ...getFoodList(categories[index], FoodList)
@@ -126,325 +226,19 @@ const HomeScreen = ({navigation}: any) => {
                     ))}
                 </ScrollView>
 
-                <Text style={styles.FoodTitle}>{BurgerList[0].type}</Text>
+                {renederFoodSection(BurgerList)}
+                {renederFoodSection(PizzaList)}
+                {renederFoodSection(ZapiekankiList)}
+                {renederFoodSection(StekiList)}
+                {renederFoodSection(KebabyList)}
+                {renederFoodSection(KidsList)}
+                {renederFoodSection(SalatkiList)}
+                {renederFoodSection(NapojeList)}
+                {renederFoodSection(MustTasteList)}
+                {renederFoodSection(DodatkiList)}
+                {renederFoodSection(SosyList)}
 
-                <FlatList
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    data={BurgerList}
-                    contentContainerStyle={styles.FlatListContainer}
-                    keyExtractor={item => item.id}
-                    renderItem={({item}) => {
-                        if (categoryIndex.category === "All" || categoryIndex.category === item.type) {
-                        return <TouchableOpacity onPress={() => {}}>
-                            <FoodCard
-                                id={item.id}
-                                index={item.index}
-                                type={item.type}
-                                stage={item.stage}
-                                imagelink_square={item.imagelink_square}
-                                name={item.name}
-                                average_rating={item.average_rating}
-                                price={item.price}
-                                buttonPressHandler={() => {}}
-                            />
-                        </TouchableOpacity>
-                        } else {
-                            return null;
-                        }
-                    }}
-                />
-                
-
-                <Text style={styles.FoodTitle}>{PizzaList[0].type}</Text>
-
-                <FlatList
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    data={PizzaList}
-                    contentContainerStyle={styles.FlatListContainer}
-                    keyExtractor={item => item.id}
-                    renderItem={({item}) => {
-                        if (categoryIndex.category === "All" || categoryIndex.category === item.type) {
-                            return <TouchableOpacity onPress={() => {}}>
-                                <FoodCard
-                                    id={item.id}
-                                    index={item.index}
-                                    type={item.type}
-                                    stage={item.stage}
-                                    imagelink_square={item.imagelink_square}
-                                    name={item.name}
-                                    average_rating={item.average_rating}
-                                    price={item.price}
-                                    buttonPressHandler={() => {}}
-                                />
-                            </TouchableOpacity>
-                            } else {
-                                return null;
-                            }
-                    }}
-                />
-
-                <Text style={styles.FoodTitle}>{ZapiekankiList[0].type}</Text>
-
-                <FlatList
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    data={ZapiekankiList}
-                    contentContainerStyle={styles.FlatListContainer}
-                    keyExtractor={item => item.id}
-                    renderItem={({item}) => {
-                        if (categoryIndex.category === "All" || categoryIndex.category === item.type) {
-                            return <TouchableOpacity onPress={() => {}}>
-                                <FoodCard
-                                    id={item.id}
-                                    index={item.index}
-                                    type={item.type}
-                                    stage={item.stage}
-                                    imagelink_square={item.imagelink_square}
-                                    name={item.name}
-                                    average_rating={item.average_rating}
-                                    price={item.price}
-                                    buttonPressHandler={() => {}}
-                                />
-                            </TouchableOpacity>
-                            } else {
-                                return null;
-                            }
-                    }}
-                />
-                
-                <Text style={styles.FoodTitle}>{StekiList[0].type}</Text>
-
-                <FlatList
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    data={StekiList}
-                    contentContainerStyle={styles.FlatListContainer}
-                    keyExtractor={item => item.id}
-                    renderItem={({item}) => {
-                        if (categoryIndex.category === "All" || categoryIndex.category === item.type) {
-                            return <TouchableOpacity onPress={() => {}}>
-                                <FoodCard
-                                    id={item.id}
-                                    index={item.index}
-                                    type={item.type}
-                                    stage={item.stage}
-                                    imagelink_square={item.imagelink_square}
-                                    name={item.name}
-                                    average_rating={item.average_rating}
-                                    price={item.price}
-                                    buttonPressHandler={() => {}}
-                                />
-                            </TouchableOpacity>
-                            } else {
-                                return null;
-                            }
-                    }}
-                />
-
-                <Text style={styles.FoodTitle}>{KebabyList[0].type}</Text>
-
-                <FlatList
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    data={KebabyList}
-                    contentContainerStyle={styles.FlatListContainer}
-                    keyExtractor={item => item.id}
-                    renderItem={({item}) => {
-                        if (categoryIndex.category === "All" || categoryIndex.category === item.type) {
-                            return <TouchableOpacity onPress={() => {}}>
-                                <FoodCard
-                                    id={item.id}
-                                    index={item.index}
-                                    type={item.type}
-                                    stage={item.stage}
-                                    imagelink_square={item.imagelink_square}
-                                    name={item.name}
-                                    average_rating={item.average_rating}
-                                    price={item.price}
-                                    buttonPressHandler={() => {}}
-                                />
-                            </TouchableOpacity>
-                            } else {
-                                return null;
-                            }
-                    }}
-                />
-
-                <Text style={styles.FoodTitle}>{KidsList[0].type}</Text>
-
-                <FlatList
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    data={KidsList}
-                    contentContainerStyle={styles.FlatListContainer}
-                    keyExtractor={item => item.id}
-                    renderItem={({item}) => {
-                        if (categoryIndex.category === "All" || categoryIndex.category === item.type) {
-                            return <TouchableOpacity onPress={() => {}}>
-                                <FoodCard
-                                    id={item.id}
-                                    index={item.index}
-                                    type={item.type}
-                                    stage={item.stage}
-                                    imagelink_square={item.imagelink_square}
-                                    name={item.name}
-                                    average_rating={item.average_rating}
-                                    price={item.price}
-                                    buttonPressHandler={() => {}}
-                                />
-                            </TouchableOpacity>
-                            } else {
-                                return null;
-                            }
-                    }}
-                />
-
-                <Text style={styles.FoodTitle}>{SalatkiList[0].type}</Text>
-
-                <FlatList
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    data={SalatkiList}
-                    contentContainerStyle={styles.FlatListContainer}
-                    keyExtractor={item => item.id}
-                    renderItem={({item}) => {
-                        if (categoryIndex.category === "All" || categoryIndex.category === item.type) {
-                            return <TouchableOpacity onPress={() => {}}>
-                                <FoodCard
-                                    id={item.id}
-                                    index={item.index}
-                                    type={item.type}
-                                    stage={item.stage}
-                                    imagelink_square={item.imagelink_square}
-                                    name={item.name}
-                                    average_rating={item.average_rating}
-                                    price={item.price}
-                                    buttonPressHandler={() => {}}
-                                />
-                            </TouchableOpacity>
-                            } else {
-                                return null;
-                            }
-                    }}
-                />
-
-                <Text style={styles.FoodTitle}>{NapojeList[0].type}</Text>
-
-                <FlatList
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    data={NapojeList}
-                    contentContainerStyle={styles.FlatListContainer}
-                    keyExtractor={item => item.id}
-                    renderItem={({item}) => {
-                        if (categoryIndex.category === "All" || categoryIndex.category === item.type) {
-                            return <TouchableOpacity onPress={() => {}}>
-                                <FoodCard
-                                    id={item.id}
-                                    index={item.index}
-                                    type={item.type}
-                                    stage={item.stage}
-                                    imagelink_square={item.imagelink_square}
-                                    name={item.name}
-                                    average_rating={item.average_rating}
-                                    price={item.price}
-                                    buttonPressHandler={() => {}}
-                                />
-                            </TouchableOpacity>
-                            } else {
-                                return null;
-                            }
-                    }}
-                />
-
-                <Text style={styles.FoodTitle}>{MustTasteList[0].type}</Text>
-
-                <FlatList
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    data={MustTasteList}
-                    contentContainerStyle={styles.FlatListContainer}
-                    keyExtractor={item => item.id}
-                    renderItem={({item}) => {
-                        if (categoryIndex.category === "All" || categoryIndex.category === item.type) {
-                            return <TouchableOpacity onPress={() => {}}>
-                                <FoodCard
-                                    id={item.id}
-                                    index={item.index}
-                                    type={item.type}
-                                    stage={item.stage}
-                                    imagelink_square={item.imagelink_square}
-                                    name={item.name}
-                                    average_rating={item.average_rating}
-                                    price={item.price}
-                                    buttonPressHandler={() => {}}
-                                />
-                            </TouchableOpacity>
-                            } else {
-                                return null;
-                            }
-                    }}
-                />
-
-                <Text style={styles.FoodTitle}>{DodatkiList[0].type}</Text>
-
-                <FlatList
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    data={DodatkiList}
-                    contentContainerStyle={styles.FlatListContainer}
-                    keyExtractor={item => item.id}
-                    renderItem={({item}) => {
-                        if (categoryIndex.category === "All" || categoryIndex.category === item.type) {
-                            return <TouchableOpacity onPress={() => {}}>
-                                <FoodCard
-                                    id={item.id}
-                                    index={item.index}
-                                    type={item.type}
-                                    stage={item.stage}
-                                    imagelink_square={item.imagelink_square}
-                                    name={item.name}
-                                    average_rating={item.average_rating}
-                                    price={item.price}
-                                    buttonPressHandler={() => {}}
-                                />
-                            </TouchableOpacity>
-                            } else {
-                                return null;
-                            }
-                    }}
-                />
-
-                <Text style={styles.FoodTitle}>{SosyList[0].type}</Text>
-
-                <FlatList
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    data={SosyList}
-                    contentContainerStyle={[styles.FlatListContainer, {marginBottom: tabBarHeight}]}
-                    keyExtractor={item => item.id}
-                    renderItem={({item}) => {
-                        if (categoryIndex.category === "All" || categoryIndex.category === item.type) {
-                            return <TouchableOpacity onPress={() => {}}>
-                                <FoodCard
-                                    id={item.id}
-                                    index={item.index}
-                                    type={item.type}
-                                    stage={item.stage}
-                                    imagelink_square={item.imagelink_square}
-                                    name={item.name}
-                                    average_rating={item.average_rating}
-                                    price={item.price}
-                                    buttonPressHandler={() => {}}
-                                />
-                            </TouchableOpacity>
-                            } else {
-                                return null;
-                            }
-                    }}
-                />
+                <Text style={[{marginBottom:tabBarHeight}]}></Text>
 
                 
             </ScrollView>
@@ -517,6 +311,10 @@ const styles = StyleSheet.create({
         fontFamily: FONTFAMILY.poppins_medium,
         color: COLORS.secondaryLightGreyHex,
     },
+    EmptyListContainer:{
+        width: Dimensions.get('window').width - SPACING.space_30*2,
+        backgroundColor: 'red',
+    }
 });
 
 export default HomeScreen;

@@ -56,7 +56,17 @@ const FoodCard: React.FC<FoodCardProps> = ({
                      <Text style={styles.CardPrice}> {price} </Text>
                      zł
                 </Text>
-                <TouchableOpacity onPress={() => {}}>
+                <TouchableOpacity onPress={() => {
+                    buttonPressHandler({
+                        id, 
+                        index, 
+                        name, 
+                        stage, 
+                        imagelink_square, 
+                        type, 
+                        price,  
+                    });
+                }}>
                     <BGIcon 
                       color={COLORS.primaryWhiteHex} 
                       name={'plus'} 
