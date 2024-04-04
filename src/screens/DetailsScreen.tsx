@@ -92,6 +92,7 @@ const DetailsScreen = ({navigation, route}: any) => {
 
                 <PaymentFooter 
                     price={ItemOfIndex.price} 
+                    title='Cena:'
                     buttonPressHandler={() => {
                         addToCartHandler({
                             id: ItemOfIndex.id, 

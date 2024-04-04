@@ -6,19 +6,22 @@ interface PaymentFooterProps {
     price: string;
     buttonPressHandler: any;
     buttonTitle: string;
+    title: string;
 }
 
 
 const PaymentFooter: React.FC<PaymentFooterProps> = ({
     price, 
     buttonPressHandler, 
-    buttonTitle
+    buttonTitle,
+    title
+
     }) => {
 
     return(
         <View style={styles.PriceFooter}>
             <View style={styles.PriceContainer}>
-                <Text style={styles.PriceTitle}> Price</Text>
+                    <Text style={styles.PriceTitle}> {title}</Text>
                 <Text style={styles.PriceText}>{price} zł </Text>
             </View>
 
@@ -44,7 +47,7 @@ const styles = StyleSheet.create({
     },
     PriceContainer: {
         alignItems: 'center',
-        width: 100,
+        width: 120,
     },
     PriceTitle: {
         fontFamily:FONTFAMILY.poppins_medium,

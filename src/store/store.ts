@@ -214,27 +214,21 @@ export const useStore = create(
                 }
           }),
         ),
-      decrementCartItemQuantity: (id: string, size: string) =>
+        decrementCartItemQuantity: (id: string, size: string) =>
         set(
-          produce(state => {
-            for (let i = 0; i < state.CartList.length; i++) {
-              if (state.CartList[i].id == id) {
-                      if (state.CartList[i].quantity > 1) {
-                        state.CartList[i].quantity--;
-                      } else {
-                        state.CartList[i].price.splice(i, 1);
-                      }
-                    } else {
-                      if (state.CartList[i].quantity > 1) {
-                        state.CartList[i].quantity--;
-                      } else {
-                        state.CartList.splice(i, 1);
-                      }
+            produce(state => {
+                for (let i = 0; i < state.CartList.length; i++) {
+                    if (state.CartList[i].id == id) {
+                        if (state.CartList[i].quantity > 1) {
+                            state.CartList[i].quantity--;
+                        } else {
+                            state.CartList.splice(i, 1); 
+                        }
                     }
-                    break;
-            }
-          }),
+                }
+            }),
         ),
+    
       addToOrderHistoryListFromCart: () =>
         set(
           produce(state => {
