@@ -16,7 +16,6 @@ interface ImageBackgroundInfoProps {
     name: string;
     stage: string;
     composition: string;
-    price: string;
     average_rating: number;
     ratings_count: string;
     BackHandler?: any;
@@ -33,7 +32,6 @@ const ImageBackgroundInfo: React.FC<ImageBackgroundInfoProps>= ({
     name,
     stage,
     composition,
-    price,
     average_rating,
     ratings_count,
     BackHandler,
@@ -164,6 +162,7 @@ const styles = StyleSheet.create({
         fontSize: FONTSIZE.size_24,
         fontFamily: FONTFAMILY.poppins_medium,
         fontWeight: 'bold',
+        marginRight: -50,
     },
     ItemPropertiesContainer:{
         flexDirection: 'row',

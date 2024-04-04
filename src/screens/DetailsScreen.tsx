@@ -78,7 +78,6 @@ const DetailsScreen = ({navigation, route}: any) => {
                     name={ItemOfIndex.name} 
                     stage={ItemOfIndex.stage} 
                     composition={ItemOfIndex.composition} 
-                    price={ItemOfIndex.price} 
                     average_rating={ItemOfIndex.average_rating}
                     ratings_count={ItemOfIndex.ratings_count} 
                     BackHandler={BackHandler}
