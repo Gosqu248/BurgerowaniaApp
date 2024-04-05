@@ -3,7 +3,6 @@ import { StyleSheet, Text, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { COLORS, SPACING } from '../theme/theme';
 import Icons from 'react-native-vector-icons/Entypo'
-import AntIcons from 'react-native-vector-icons/AntDesign'
 
 interface GradientBGIconProps {
     name: string;

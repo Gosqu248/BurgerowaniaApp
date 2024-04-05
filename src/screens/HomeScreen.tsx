@@ -142,11 +142,6 @@ const HomeScreen = ({navigation}: any) => {
             </React.Fragment>
         );
     };
-    
-    
-
-    //console.log("NazwaPizzy= ", FoodList);
-
 
     return(
         <View style={styles.ScreenContainer}>
@@ -158,45 +153,7 @@ const HomeScreen = ({navigation}: any) => {
 
                 <Text style={styles.TextFind}> Find the best {'\n'} food for you</Text>
             
-            {/*
-                <View style={styles.InputContainerComponent}>
-                    <TouchableOpacity onPress={() => {
-                    }}>
-                        <Icons 
-                            style={styles.InputIcon}
-                            name="search1" 
-                            size={FONTSIZE.size_18} 
-                            color={
-                                searchText.length > 0 
-                                ? COLORS.primaryOrangeHex
-                                : COLORS.primaryLightGreyHex
-                            }
-                        /> 
-                    </TouchableOpacity>
-                    <TextInput 
-                        placeholder="FInd Your Food..." 
-                        value={searchText}
-                        onChangeText={text => setSearchText(text)}
-                        placeholderTextColor={COLORS.primaryLightGreyHex}
-                        style={styles.TextInputContainer}
-                    />
-
-                    { searchText.length > 0 ? (
-                        <TouchableOpacity onPress={() => {
-                        }}>
-                            <Icons 
-                                style= {styles.InputIcon}
-                                name ="close" 
-                                size={FONTSIZE.size_16}
-                                color={COLORS.primaryLightGreyHex}
-
-                            />
-                        </TouchableOpacity>
-                    ) : (
-                        <></>
-                    )}
-                </View>
-                    */ }
+            
             
                 <ScrollView
                  horizontal
