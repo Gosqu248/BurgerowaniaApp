@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     ItemTitleText:{
-        width: 280,
+        width: 250,
         color: COLORS.primaryWhiteHex,
         fontSize: FONTSIZE.size_24,
         fontFamily: FONTFAMILY.poppins_medium,

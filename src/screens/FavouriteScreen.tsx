@@ -33,7 +33,7 @@ const FavouriteScreen = ({navigation} : any) => {
                     <View style={styles.ItemContainer}>
                         <HeaderBar title="Ulubione"/>
 
-                        {FavoritesList.length == 0 ? (<EmptyListAnimation title={"Brak"}/>
+                        {FavoritesList.length == 0 ? (<EmptyListAnimation title={"Brak ulubionych "} animationNumber={2}/>
                         ) : (
                            <View style={styles.ListItemContainer}> 
                                 {FavoritesList.map((data: any) => (

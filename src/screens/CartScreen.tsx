@@ -43,9 +43,10 @@ const CartScreen = ({navigation, route}:any) => {
                 <View 
                     style={[styles.ScrollViewInnerView, {marginBottom:tabBarHeight}]}>
                     <View style={styles.ItemContainer}>
-                        <HeaderBar title="Cart"/>
+                        <HeaderBar title="Koszyk"/>
 
-                        {CartList.length == 0 ? (<EmptyListAnimation title={"Brak"}/>
+                        {CartList.length == 0 ? (
+                            <EmptyListAnimation title={"Pusto"} animationNumber={1}/>
                         ) : (
                            <View style={styles.ListItemContainer}> 
                                 {CartList.map((data: any) => (

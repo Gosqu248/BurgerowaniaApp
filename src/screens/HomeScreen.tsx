@@ -117,7 +117,9 @@ const HomeScreen = ({navigation}: any) => {
                     keyExtractor={item => item.id}
                     renderItem={({item}) => {
                             return (
-                                <TouchableOpacity onPress={() => {
+                                <TouchableOpacity 
+                                    
+                                    onPress={() => {
                                     navigation.navigate('Details', {
                                         index: item.index, 
                                         id: item.id, 
@@ -216,6 +218,7 @@ const styles = StyleSheet.create({
         fontSize: FONTSIZE.size_28,
         fontFamily: FONTFAMILY.poppins_semibold,
         paddingLeft: SPACING.space_30,
+        paddingBottom: SPACING.space_30,
     },
     InputContainerComponent: {
         margin: SPACING.space_30,

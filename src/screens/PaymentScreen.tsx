@@ -57,12 +57,12 @@ const PaymentScreen = ({navigation, route}:any) => {
             <StatusBar backgroundColor={'black'} />
 
             {showAnimation 
-                ? <PopUpAnimation
+                ? (<PopUpAnimation
                     style={styles.LottieAnimation}
                     source={require('../lottie/successful.json')}
                 />
-                : <></>
-            }
+                ): (<></>
+            )}
 
             <ScrollView
             showsVerticalScrollIndicator={false}

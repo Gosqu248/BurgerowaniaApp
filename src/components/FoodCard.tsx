@@ -5,7 +5,7 @@ import { BORDERRADIUS, COLORS, FONTFAMILY, FONTSIZE, SPACING } from '../theme/th
 import Icons from "react-native-vector-icons/AntDesign"
 import BGIcon from './BGIcon';
 
-const CARD_WIDTH = Dimensions.get('window').width * 0.32;
+const CARD_WIDTH = Dimensions.get('window').width * 0.36;
 
 interface FoodCardProps {
     id: string;
@@ -47,32 +47,34 @@ const FoodCard: React.FC<FoodCardProps> = ({
                             color={COLORS.primaryOrangeHex}
                             size={FONTSIZE.size_16}
                         />
-                        <Text style={styles.CardRatingText}> {average_rating}</Text>
+                        <Text style={styles.CardRatingText}>{average_rating}</Text>
                     </View>
             </ImageBackground>
-            <Text style={styles.CardTitle}> {name}</Text>
-            <View style={styles.CardFooterRow}>
-                <Text style={styles.CardPriceCurrency}>
-                     <Text style={styles.CardPrice}> {price} </Text>
-                     zł
-                </Text>
-                <TouchableOpacity onPress={() => {
-                    buttonPressHandler({
-                        id, 
-                        index, 
-                        name, 
-                        stage, 
-                        imagelink_square, 
-                        type, 
-                        price,  
-                    });
-                }}>
-                    <BGIcon 
-                      color={COLORS.primaryWhiteHex} 
-                      name={'plus'} 
-                      BGColor={COLORS.primaryOrangeHex}
-                      size={FONTSIZE.size_10}/>
-                </TouchableOpacity>
+            <View style={styles.CardContainer}>
+                <Text style={styles.CardTitle}> {name}</Text>
+                <View style={styles.CardFooterRow}>
+                    <Text style={styles.CardPriceCurrency}>
+                        <Text style={styles.CardPrice}> {price} </Text>
+                        zł
+                    </Text>
+                    <TouchableOpacity onPress={() => {
+                        buttonPressHandler({
+                            id, 
+                            index, 
+                            name, 
+                            stage, 
+                            imagelink_square, 
+                            type, 
+                            price,  
+                        });
+                    }}>
+                        <BGIcon 
+                        color={COLORS.primaryWhiteHex} 
+                        name={'plus'} 
+                        BGColor={COLORS.primaryOrangeHex}
+                        size={FONTSIZE.size_10}/>
+                    </TouchableOpacity>
+                </View>
             </View>
         </LinearGradient>
     );
@@ -81,12 +83,16 @@ const styles = StyleSheet.create({
     CardLinearGradientContainer:{
         padding:SPACING.space_15,
         borderRadius: BORDERRADIUS.radius_20,
+        width: 180,
+        height: 280,
     },
     CardImageBG:{
         width: CARD_WIDTH,
         height: CARD_WIDTH,
         borderRadius: BORDERRADIUS.radius_20,
         marginBottom: SPACING.space_15,
+        alignItems: 'center',
+        justifyContent: 'center',
         overflow: 'hidden',
     },
     CardRatingContainer:{
@@ -112,6 +118,7 @@ const styles = StyleSheet.create({
         fontFamily: FONTFAMILY.poppins_medium,
         color: COLORS.primaryWhiteHex,
         fontSize: FONTSIZE.size_16,
+        paddingBottom: SPACING.space_10,
     },
     CardSubTitle:{
         fontFamily: FONTFAMILY.poppins_light,
@@ -122,7 +129,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        marginTop: SPACING.space_15,
+        marginBottom: SPACING.space_15,
     },
     CardPriceCurrency:{
         fontFamily: FONTFAMILY.poppins_bold,
@@ -131,6 +138,14 @@ const styles = StyleSheet.create({
         fontSize: FONTSIZE.size_18,
     },
     CardPrice:{
+        fontFamily: FONTFAMILY.poppins_bold,
+        fontWeight: 'bold',
+        fontSize: FONTSIZE.size_18,
+    },
+    CardContainer:{
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        height: 100,
     },
 });
 
