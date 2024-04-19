@@ -1,11 +1,34 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Image, View, Text, TextInput, Alert } from 'react-native';
 import { BORDERRADIUS, COLORS, SPACING } from '../theme/theme';
 import LinearGradient from 'react-native-linear-gradient';
 import { TouchableOpacity } from 'react-native';
+import { signInWithEmail, signInWithGoogle, onGoogleButtonPress } from '../db/firesbase';
+import {GoogleSignin, GoogleSigninButton } from '@react-native-google-signin/google-signin';
+
 
 
 const LoginScreen = ({navigation}: any) => {
+    
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false); 
+
+    
+
+    const handleSignIn = async () => {
+        setLoading(true);
+        await signInWithEmail(email, password, navigation);
+        setLoading(false);
+    };
+
+    const handleSignInWithGoogle = async () => {
+        setLoading(true);
+        await onGoogleButtonPress();
+        setLoading(false);
+      };
+
+
   
     return(
         <View style={styles.Container}>
@@ -19,7 +42,12 @@ const LoginScreen = ({navigation}: any) => {
                         end={{x:0, y:1}}
                         colors={['#212121', '#424242', '#616161']}
                         style={styles.InputButton}>
-                        <TextInput placeholder="Login" placeholderTextColor="gray" style={styles.InputText}></TextInput>
+                        <TextInput 
+                            placeholder="Email" 
+                            value={email}
+                            placeholderTextColor="gray" 
+                            onChangeText={text => setEmail(text)}
+                            style={styles.InputText}></TextInput>
                     </LinearGradient>
 
                     <LinearGradient 
@@ -27,21 +55,35 @@ const LoginScreen = ({navigation}: any) => {
                         end={{x:0, y:1}}
                         colors={['#212121', '#424242', '#616161']}
                         style={styles.InputButton}>
-                        <TextInput placeholder="Password" secureTextEntry={true} placeholderTextColor="gray"  style={styles.InputText}></TextInput>
+                        <TextInput 
+                            placeholder="Password" 
+                            value={password}
+                            onChangeText={text => setPassword(text)}
+                            secureTextEntry={true} 
+                            placeholderTextColor="gray"  
+                            style={styles.InputText}></TextInput>
                     </LinearGradient>
 
                     <View style={styles.LoginButton}>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={handleSignIn}>
                             <Text style={styles.LoginText}> Zaloguj się</Text>
                         </TouchableOpacity>
                     </View>
+
+                    <Text style={styles.SignText1}>Lub zaloguj się za pomocą</Text>
+                        <GoogleSigninButton
+                            style={styles.GoogleButton}
+                            size={GoogleSigninButton.Size.Icon}
+                            color={GoogleSigninButton.Color.Light}
+                            onPress={handleSignInWithGoogle}
+                        />
 
                     <View style={styles.SignContainer}>
                         <Text style={styles.SignText1}> Nie masz konta?</Text>
                         <TouchableOpacity
                             onPress= {() => {
                                 navigation.navigate('Sign');
-                            }}>npm install --save @react-native-firebase/app
+                            }}>
 
                             <Text style={styles.SignText2}> Zarejestruj się</Text>
                         </TouchableOpacity>
@@ -63,14 +105,14 @@ const styles = StyleSheet.create({
         position: 'relative',
     },
     Logo:{
-        marginTop: 70,
+        marginTop: 30,
        height: 150,
        width: 150,
        position: 'absolute',
        borderRadius: 35,
     },
     Title:{
-        marginTop: 240,
+        marginTop: 180,
         fontFamily: 'Poppins-Bold',
         fontSize: 45,
         fontWeight: 'bold',
@@ -78,7 +120,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
     },
     InputContainer:{
-        marginTop: 350,
+        marginTop: 270,
         position: 'absolute',
         justifyContent: 'center',
         alignItems: 'center',
@@ -88,7 +130,7 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.primaryOrangeHex,
         borderRadius: 25,
         width: 370,
-        padding: 15,
+        padding: 10,
         margin: 10,
         
     },
@@ -125,6 +167,12 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: 'bold',
     },
+    GoogleButton:{
+        width: 100,
+        height: 70,
+        margin: 20,
+        borderRadius: 30,
+    }
 });
 
 export default LoginScreen;

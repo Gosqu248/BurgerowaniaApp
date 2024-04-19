@@ -1,13 +1,11 @@
-import React, {useState, useRef} from 'react';
+import React, {useState} from 'react';
 import { StatusBar, StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput, TextBase, Dimensions, ToastAndroid} from 'react-native';
-import Icons from 'react-native-vector-icons/AntDesign';
 import {useStore} from '../store/store';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { BORDERRADIUS, COLORS, FONTFAMILY, FONTSIZE, SPACING } from '../theme/theme';
 import {FlatList} from 'react-native';
 import HeaderBar from '../components/HeaderBar';
 import FoodCard from '../components/FoodCard';
-import TabNavigator from '../navigator/TabNavigator';
 
 const getCategoriesFromData = (data: any) => {
     let temp:any = {};
@@ -32,6 +30,8 @@ const getFoodList = (category: string, data:any) => {
         return foodList;
     }
 };
+
+
 
 const HomeScreen = ({navigation}: any) => {
 
@@ -97,13 +97,13 @@ const HomeScreen = ({navigation}: any) => {
             );
     };
 
-
     const renederFoodSection = (dataList: any) => {
         if (!dataList.some((item: { type: string; }) => categoryIndex.category === "All" || categoryIndex.category === item.type)) {            
             return null; 
         }
     
         return (
+            
             <React.Fragment>
                 <Text style={[styles.FoodTitle,
                         categoryIndex.category === "All" ? {marginTop: 52} : null

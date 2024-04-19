@@ -1,11 +1,26 @@
-import React from 'react';
-import { StyleSheet, Image, View, Text, TextInput } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Image, View, Text, TextInput, Alert } from 'react-native';
 import { BORDERRADIUS, COLORS, SPACING } from '../theme/theme';
 import LinearGradient from 'react-native-linear-gradient';
 import { TouchableOpacity } from 'react-native';
+import { signUp } from '../db/firesbase';
 
 
-const LoginScreen = ({navigation}: any) => {
+const SignScreen = ({navigation}: any) => {
+
+        const [login, setLogin] = useState('');
+        const [email, setEmail] = useState('');
+        const [password, setPassword] = useState('');
+        const [loading, setLoading] = useState(false);
+
+       const handleSignUp = async () => {
+            setLoading(true);
+            await signUp(email, password, navigation);
+            setLoading(false);
+        }
+    
+
+
     return(
         <View style={styles.Container}>
             <Image source={require('../assets/app_images/loginBack.jpg')} style={styles.Image}></Image>
@@ -13,12 +28,19 @@ const LoginScreen = ({navigation}: any) => {
             <Text style={styles.Title}> Zarejestruj się </Text>
 
             <View style={styles.InputContainer}>
+                    
+
                     <LinearGradient 
                         start={{x:0, y:0}} 
                         end={{x:0, y:1}}
                         colors={['#212121', '#424242', '#616161']}
                         style={styles.InputButton}>
-                        <TextInput placeholder="Login" placeholderTextColor="gray" style={styles.InputText}></TextInput>
+                        <TextInput 
+                            placeholder="E-mail" 
+                            value={email}
+                            onChangeText={(text) => setEmail(text)}
+                            placeholderTextColor="gray" 
+                            style={styles.InputText}></TextInput>
                     </LinearGradient>
 
                     <LinearGradient 
@@ -26,19 +48,19 @@ const LoginScreen = ({navigation}: any) => {
                         end={{x:0, y:1}}
                         colors={['#212121', '#424242', '#616161']}
                         style={styles.InputButton}>
-                        <TextInput placeholder="E-mail" placeholderTextColor="gray" style={styles.InputText}></TextInput>
-                    </LinearGradient>
-
-                    <LinearGradient 
-                        start={{x:0, y:0}} 
-                        end={{x:0, y:1}}
-                        colors={['#212121', '#424242', '#616161']}
-                        style={styles.InputButton}>
-                        <TextInput placeholder="Password" placeholderTextColor="gray"  style={styles.InputText}></TextInput>
+                        <TextInput 
+                            placeholder="Password" 
+                            placeholderTextColor="gray"  
+                            value={password}
+                            secureTextEntry={true} 
+                            onChangeText={(text) => setPassword(text)}
+                            style={styles.InputText}></TextInput>
                     </LinearGradient>
 
                     <View style={styles.LoginButton}>
-                        <Text style={styles.LoginText}> Zarejestruj się</Text>
+                        <TouchableOpacity onPress={handleSignUp}>
+                            <Text style={styles.LoginText}> Zarejestruj się</Text>
+                        </TouchableOpacity>
                     </View>
 
                     <View style={styles.SignContainer}>
@@ -132,6 +154,6 @@ const styles = StyleSheet.create({
     },
 });
 
-export default LoginScreen;
+export default SignScreen;
 
 
