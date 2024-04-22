@@ -5,6 +5,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { TouchableOpacity } from 'react-native';
 import { signInWithEmail, signInWithGoogle, onGoogleButtonPress } from '../db/firesbase';
 import {GoogleSignin, GoogleSigninButton } from '@react-native-google-signin/google-signin';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
@@ -14,7 +15,22 @@ const LoginScreen = ({navigation}: any) => {
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false); 
 
+    useEffect(() => {
+        checkLoginStatus();
+    }, []);
     
+    
+
+    const checkLoginStatus = async () => {
+        const email = await AsyncStorage.getItem('email');
+        if (email !== null && email !== undefined) {
+            console.log(email);
+            navigation.reset({
+                index: 0,
+                routes: [{ name: 'Tab' }],
+              });
+        }
+    };
 
     const handleSignIn = async () => {
         setLoading(true);
@@ -24,9 +40,9 @@ const LoginScreen = ({navigation}: any) => {
 
     const handleSignInWithGoogle = async () => {
         setLoading(true);
-        await onGoogleButtonPress();
+        await signInWithGoogle();
         setLoading(false);
-      };
+    };
 
 
   
@@ -155,7 +171,7 @@ const styles = StyleSheet.create({
     },
     SignContainer:{
         flexDirection: 'row',
-        paddingTop: 50,
+        alignItems: 'flex-end',
         margin: 20,
     },
     SignText1:{

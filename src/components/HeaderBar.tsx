@@ -16,13 +16,11 @@ const HeaderBar: React.FC<HeaderBarProps> = ({title}) => {
       navigation.navigate('ProfSet'); 
     };
 
-    const goToLogin = () => {
-        navigation.navigate('Login');
-    };
+    
 
     return(
         <View style={styles.HeaderContainer}>
-            <TouchableOpacity onPress={goToLogin}>
+            <TouchableOpacity >
                 <GradientBGIcon 
                     name="menu" 
                     color={COLORS.primaryLightGreyHex} 

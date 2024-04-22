@@ -11,6 +11,8 @@ import ProfSetScreen from './src/screens/ProfSetScreen';
 import SplashScreen from 'react-native-splash-screen';
 import LoginScreen from './src/screens/LoginScreen';
 import SignScreen from './src/screens/SignScreen';
+import PasswordScreen from './src/screens/PasswordScreen';
+
 
 
 
@@ -25,10 +27,17 @@ const App = () => {
   return (
     <NavigationContainer>
         <Stack.Navigator screenOptions={{headerShown: false}}>
+
             <Stack.Screen 
               name="Tab" 
               component={TabNavigator} 
               options={{animation: 'slide_from_bottom'}}>
+            </Stack.Screen>
+
+            <Stack.Screen
+                name="Login" 
+                component={LoginScreen} 
+                options={{animation: 'ios'}}>
             </Stack.Screen>
 
             <Stack.Screen 
@@ -50,15 +59,16 @@ const App = () => {
                 options={{animation: 'ios'}}>
             </Stack.Screen>
 
+            
             <Stack.Screen
-                name="Login" 
-                component={LoginScreen} 
+                name="Sign" 
+                component={SignScreen} 
                 options={{animation: 'ios'}}>
             </Stack.Screen>
 
             <Stack.Screen
-                name="Sign" 
-                component={SignScreen} 
+                name="Pass" 
+                component={PasswordScreen} 
                 options={{animation: 'ios'}}>
             </Stack.Screen>
 

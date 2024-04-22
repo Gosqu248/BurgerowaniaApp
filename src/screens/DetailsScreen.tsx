@@ -86,7 +86,7 @@ const DetailsScreen = ({navigation, route}: any) => {
 
                 <View style={styles.footerInfoArea}>
                     <Text style={styles.InfoTitle}>Skład :</Text>
-                     <Text numberOfLines={4} style={styles.DescriptionText}> {ItemOfIndex.composition}</Text>
+                     <Text numberOfLines={6} style={styles.DescriptionText}> {ItemOfIndex.composition}</Text>
                 </View>
 
                 <PaymentFooter 

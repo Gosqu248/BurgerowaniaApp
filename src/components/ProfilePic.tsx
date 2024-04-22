@@ -1,14 +1,35 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Image, View, TouchableOpacity } from 'react-native';
 import { COLORS, SPACING } from '../theme/theme';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-const ProfilePic = ({navigation}: any) => {
+const ProfilePic = () => {
+
+    const [uri, setUri] = useState('');
+    const [refreshKey, setRefreshKey] = useState(0); // Nowy klucz do wymuszenia odświeżenia
+
+
+    useEffect(() => {
+        const getUri = async () => {
+            const uri = await AsyncStorage.getItem('profileImage');
+            if (uri !== null) {
+                setUri(uri);
+            }
+            refreshImage();
+        };
+        getUri();
+    }, [refreshKey]);
+
+    const refreshImage = () => {
+        setRefreshKey((prevKey) => prevKey + 1);
+    };
+    
     return(
         <View style={styles.ImageContainer}>
                 <Image 
-                    source={require('../assets/app_images/avatar.png')} 
-                    style={styles.Image}/>
+                        source={uri ? { uri: uri } : require('../assets/app_images/avatar.png')} 
+                        style={styles.Image}/>
         </View>
     );
 };

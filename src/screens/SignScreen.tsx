@@ -89,14 +89,14 @@ const styles = StyleSheet.create({
         position: 'relative',
     },
     Logo:{
-        marginTop: 70,
+        marginTop: 30,
        height: 150,
        width: 150,
        position: 'absolute',
        borderRadius: 35,
     },
     Title:{
-        marginTop: 240,
+        marginTop: 180,
         fontFamily: 'Poppins-Bold',
         fontSize: 45,
         fontWeight: 'bold',
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
     },
     InputContainer:{
-        marginTop: 350,
+        marginTop: 270,
         position: 'absolute',
         justifyContent: 'center',
         alignItems: 'center',
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
         borderRadius: 25,
         width: 370,
         padding: 10,
-        margin: 5,
+        margin: 10,
         
     },
     InputText:{
@@ -139,9 +139,9 @@ const styles = StyleSheet.create({
     },
     SignContainer:{
         flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
+        alignItems: 'flex-end',
         margin: 20,
+        paddingTop: 135,
     },
     SignText1:{
         color: 'white',

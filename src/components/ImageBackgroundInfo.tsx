@@ -200,6 +200,7 @@ const styles = StyleSheet.create({
         fontFamily: FONTFAMILY.poppins_regular,
     },
     StageContainer:{
+        marginLeft: 35,
         height: 55,
         width: 55*2 + SPACING.space_20,
         borderRadius: BORDERRADIUS.radius_15,

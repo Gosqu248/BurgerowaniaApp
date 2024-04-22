@@ -234,7 +234,7 @@ const styles = StyleSheet.create({
     },
     CreditCardNumber:{
         fontFamily: FONTFAMILY.poppins_semibold,
-        fontSize: FONTSIZE.size_18,
+        fontSize: FONTSIZE.size_14,
         color: COLORS.primaryWhiteHex,
         letterSpacing: SPACING.space_4 + SPACING.space_2,
         fontWeight: 'bold',

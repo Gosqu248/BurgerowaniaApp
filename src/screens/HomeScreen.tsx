@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { StatusBar, StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput, TextBase, Dimensions, ToastAndroid} from 'react-native';
 import {useStore} from '../store/store';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
@@ -6,6 +6,7 @@ import { BORDERRADIUS, COLORS, FONTFAMILY, FONTSIZE, SPACING } from '../theme/th
 import {FlatList} from 'react-native';
 import HeaderBar from '../components/HeaderBar';
 import FoodCard from '../components/FoodCard';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const getCategoriesFromData = (data: any) => {
     let temp:any = {};
@@ -34,6 +35,19 @@ const getFoodList = (category: string, data:any) => {
 
 
 const HomeScreen = ({navigation}: any) => {
+    
+    useEffect(() => {
+        checkLoginStatus();
+    }, []);
+
+    const checkLoginStatus = async () => {
+        const email = await AsyncStorage.getItem('email');
+        console.log(email);
+        if (email == undefined && email == null) {
+            navigation.replace('Login');
+        }
+    };
+
 
     const BurgerList = useStore((state: any) => state.BurgerList);
     const PizzaList = useStore((state: any) => state.PizzaList);
