@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
           justifyContent: 'center',
      },
      NameTitle:{
-          fontSize: 40,
+        fontSize: 25,
           paddingTop: 20,
           color: COLORS.primaryWhiteHex,
      },

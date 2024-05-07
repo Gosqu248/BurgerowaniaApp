@@ -13,6 +13,33 @@ import SalatkiData from '../data/SalatkiData';
 import NapojeData from '../data/NapojeData';
 import KebabData from '../data/KebabData';
 import MustTasteData from '../data/MustTasteData';
+import { initializeApp } from "firebase/app";
+
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+import { addDoc, collection, getDocs, getFirestore, initializeFirestore } from 'firebase/firestore';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDJ0MzRiITE2mcp6_O6KenPfR1YyL1av4I",
+  authDomain: "burgerownia-248.firebaseapp.com",
+  projectId: "burgerownia-248",
+  storageBucket: "burgerownia-248.appspot.com",
+  messagingSenderId: "413523460490",
+  appId: "1:413523460490:web:06743a725af7d5c24c4873",
+  measurementId: "G-60PV422H8M"
+};
+
+const app = initializeApp(firebaseConfig);
+ const db = getFirestore(app);
+
+ const saveDataToFirebase = async (data: any) => {
+  try {
+    const docRef = await addDoc(collection(db, 'data'), data);
+    console.log('Document written with ID: ', docRef.id);
+  } catch (e) {
+    console.error('Error adding document: ', e);
+  }
+};
 
 export const useStore = create(
   persist(
@@ -259,9 +286,29 @@ export const useStore = create(
             state.CartList = [];
           }),
         ),
+        saveDataToFirebase: async () => {
+        const { CartPrice, FavoritesList, CartList, OrderHistoryList }: any = get();
+        const data = { CartPrice, FavoritesList, CartList, OrderHistoryList };
+        console.log(data);
+        await saveDataToFirebase(data);
+      },
+
+      // Funkcja do pobierania danych z bazy danych Firebase i aktualizacji stanu
+      fetchDataFromFirebase: async () => {
+        try {
+          const querySnapshot = await getDocs(collection(db, 'data'));
+          querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            set(data); // Aktualizacja stanu na podstawie danych z Firebase
+          });
+          console.log('Data fetched from Firebase');
+        } catch (e) {
+          console.error('Error fetching data: ', e);
+        }
+      },
     }),
     {
-      name: 'coffee-app',
+      name: 'Burgerownia-app',
       storage: createJSONStorage(() => AsyncStorage),
     },
   ),

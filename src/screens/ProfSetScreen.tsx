@@ -6,12 +6,12 @@ import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons'
 import Icon3 from 'react-native-vector-icons/EvilIcons'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationProp } from '@react-navigation/native';
-import {signOut, removeAccount} from '../db/firesbase';
+import {removeAccount, signOutFromAcc} from '../db/firesbase';
 import ImagePicker, { Asset, ImageLibraryOptions, ImagePickerResponse, launchImageLibrary } from 'react-native-image-picker'; 
 import GradientBGIcon from '../components/GradientBGIcon';
 
 
-const checkLoginStatus = async () => {
+const getUserName = async () => {
      let name = '';
  
      try {
@@ -31,11 +31,12 @@ const checkLoginStatus = async () => {
 const ProfSetScreen = ({navigation}:any) => {
 
      const [name, setName] = useState('');
+     console.log('name:', name);
 
 
      useEffect(() => {
          const fetchName = async () => {
-             const retrievedName = await checkLoginStatus();
+             const retrievedName = await getUserName();
              setName(retrievedName);
          };
  
@@ -58,7 +59,7 @@ const ProfSetScreen = ({navigation}:any) => {
                   text: 'Wyloguj się',
                   onPress: async () => {
                     
-                    await signOut(navigation);
+                    await signOutFromAcc(navigation);
                 },
                 },
               ],
@@ -245,8 +246,8 @@ const styles = StyleSheet.create({
           justifyContent: 'center',
      },
      NameTitle:{
-          fontSize: 40,
-          paddingTop: 20,
+          fontSize: 25,
+          paddingTop: 30,
           color: COLORS.primaryWhiteHex,
      },
      SettingContainer:{

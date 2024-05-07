@@ -3,7 +3,7 @@ import { StyleSheet, Image, View, Text, TextInput, Alert } from 'react-native';
 import { BORDERRADIUS, COLORS, SPACING } from '../theme/theme';
 import LinearGradient from 'react-native-linear-gradient';
 import { TouchableOpacity } from 'react-native';
-import { signInWithEmail, signInWithGoogle, onGoogleButtonPress } from '../db/firesbase';
+import { signInWithEmail, signInWithGoogle } from '../db/firesbase';
 import {GoogleSignin, GoogleSigninButton } from '@react-native-google-signin/google-signin';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -39,9 +39,7 @@ const LoginScreen = ({navigation}: any) => {
     };
 
     const handleSignInWithGoogle = async () => {
-        setLoading(true);
-        await signInWithGoogle();
-        setLoading(false);
+        await signInWithGoogle(navigation);
     };
 
 
@@ -80,6 +78,17 @@ const LoginScreen = ({navigation}: any) => {
                             style={styles.InputText}></TextInput>
                     </LinearGradient>
 
+                    <View style={styles.SignContainer}>
+                        <Text style={styles.SignText1}> Zapomniałeś hasła?</Text>
+                        <TouchableOpacity
+                            onPress= {() => {
+                                navigation.navigate('Reset');
+                            }}>
+
+                            <Text style={styles.SignText2}> Przypomnij je</Text>
+                        </TouchableOpacity>
+                    </View>
+
                     <View style={styles.LoginButton}>
                         <TouchableOpacity onPress={handleSignIn}>
                             <Text style={styles.LoginText}> Zaloguj się</Text>
@@ -93,6 +102,8 @@ const LoginScreen = ({navigation}: any) => {
                             color={GoogleSigninButton.Color.Light}
                             onPress={handleSignInWithGoogle}
                         />
+
+                    
 
                     <View style={styles.SignContainer}>
                         <Text style={styles.SignText1}> Nie masz konta?</Text>
@@ -136,7 +147,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
     },
     InputContainer:{
-        marginTop: 270,
+        marginTop: 250,
         position: 'absolute',
         justifyContent: 'center',
         alignItems: 'center',
@@ -146,7 +157,7 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.primaryOrangeHex,
         borderRadius: 25,
         width: 370,
-        padding: 10,
+        padding: 5,
         margin: 10,
         
     },
@@ -186,7 +197,8 @@ const styles = StyleSheet.create({
     GoogleButton:{
         width: 100,
         height: 70,
-        margin: 20,
+        marginTop: 20,
+        marginBottom: 10,
         borderRadius: 30,
     }
 });

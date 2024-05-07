@@ -1,36 +1,39 @@
 import React, { useState } from 'react';
 import { StyleSheet, Image, View, Text, TextInput, Alert } from 'react-native';
-import { BORDERRADIUS, COLORS, SPACING } from '../theme/theme';
+import { BORDERRADIUS, COLORS, FONTSIZE, SPACING } from '../theme/theme';
 import LinearGradient from 'react-native-linear-gradient';
 import { TouchableOpacity } from 'react-native';
-import { signInWithGoogle, signUp } from '../db/firesbase';
-import { GoogleSigninButton } from '@react-native-google-signin/google-signin';
+import GradientBGIcon from '../components/GradientBGIcon';
+import { resetPassword } from '../db/firesbase';
 
 
-const SignScreen = ({navigation}: any) => {
+const ResetPassScreen = ({navigation}: any) => {
 
-        const [login, setLogin] = useState('');
         const [email, setEmail] = useState('');
-        const [password, setPassword] = useState('');
-        const [loading, setLoading] = useState(false);
 
-       const handleSignUp = async () => {
-            setLoading(true);
-            await signUp(email, password, navigation);
-            setLoading(false);
+       const resetPass = async () => {
+        resetPassword(email);
+        navigation.goBack();
         }
-
-        const handleSignInWithGoogle = async () => {
-            await signInWithGoogle(navigation);
-        };
     
 
 
     return(
         <View style={styles.Container}>
             <Image source={require('../assets/app_images/loginBack.jpg')} style={styles.Image}></Image>
+            <View style={styles.ImageHeaderBarContainerWithBack}>
+                            <TouchableOpacity onPress={() =>{
+                                navigation.goBack();
+                            }}>
+                                <GradientBGIcon 
+                                    name='chevron-left' 
+                                    color={COLORS.primaryOrangeHex} 
+                                    size={32}
+                                />
+                            </TouchableOpacity>
+            </View>
             <Image source={require('../assets/app_images/burgerowniaIcon.jpg')} style={styles.Logo}></Image>
-            <Text style={styles.Title}> Zarejestruj się </Text>
+            <Text style={styles.Title}> Przypomnij hasło</Text>
 
             <View style={styles.InputContainer}>
                     
@@ -48,45 +51,32 @@ const SignScreen = ({navigation}: any) => {
                             style={styles.InputText}></TextInput>
                     </LinearGradient>
 
-                    <LinearGradient 
-                        start={{x:0, y:0}} 
-                        end={{x:0, y:1}}
-                        colors={['#212121', '#424242', '#616161']}
-                        style={styles.InputButton}>
-                        <TextInput 
-                            placeholder="Password" 
-                            placeholderTextColor="gray"  
-                            value={password}
-                            secureTextEntry={true} 
-                            onChangeText={(text) => setPassword(text)}
-                            style={styles.InputText}></TextInput>
-                    </LinearGradient>
 
-                    <View style={styles.LoginButton}>
-                        <TouchableOpacity onPress={handleSignUp}>
-                            <Text style={styles.LoginText}> Zarejestruj się</Text>
+                    <View style={styles.ResetButton}>
+                        <TouchableOpacity onPress={resetPass}>
+                            <Text style={styles.LoginText}> Przypomnij</Text>
                         </TouchableOpacity>
                     </View>
 
-                    <View style={styles.SignContainer}>
-                        <Text style={styles.SignText1}> Masz już konto?</Text>
-                        <TouchableOpacity
-                            onPress= {() => {
-                                navigation.navigate('Login');
-                            }}>
-                            <Text style={styles.SignText2}> Zaloguj się</Text>
-                        </TouchableOpacity>
-                    </View>
+                    
             </View>
         </View>
     );
 };
 const styles = StyleSheet.create({
     Container:{
-        justifyContent: 'flex-start',
+        flex: 1,
+        flexDirection: 'column',
         alignItems: 'center',
-        backgroundColor: COLORS.primaryWhiteHex,
-        
+        overflow: 'hidden',
+        backgroundColor: 'black',   
+    },
+    ImageHeaderBarContainerWithBack:{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+       paddingRight: 290,
+       paddingTop: 35,
+       position: 'absolute',
     },
     Image:{
         width: '100%',
@@ -94,14 +84,14 @@ const styles = StyleSheet.create({
         position: 'relative',
     },
     Logo:{
-        marginTop: 30,
+        marginTop: 100,
        height: 150,
        width: 150,
        position: 'absolute',
        borderRadius: 35,
     },
     Title:{
-        marginTop: 180,
+        marginTop: 250,
         fontFamily: 'Poppins-Bold',
         fontSize: 45,
         fontWeight: 'bold',
@@ -109,7 +99,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
     },
     InputContainer:{
-        marginTop: 250,
+        marginTop: 340,
         position: 'absolute',
         justifyContent: 'center',
         alignItems: 'center',
@@ -119,21 +109,22 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.primaryOrangeHex,
         borderRadius: 25,
         width: 370,
-        padding: 5,
-        margin: 10,
+        padding: 10,
+        margin: 20,
         
     },
     InputText:{
         color: 'white',
         fontSize: 30,
     },
-    LoginButton:{
+    ResetButton:{
         backgroundColor: COLORS.primaryOrangeHex,
         borderRadius: 25,
         width: 350,
         height: 90,
         padding: 15,
         margin: 20,
+        marginTop: 80,
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -145,7 +136,8 @@ const styles = StyleSheet.create({
     SignContainer:{
         flexDirection: 'row',
         alignItems: 'flex-end',
-        margin: 90,
+        margin: 20,
+        paddingTop: 135,
     },
     SignText1:{
         color: 'white',
@@ -156,9 +148,8 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: 'bold',
     },
-   
 });
 
-export default SignScreen;
+export default ResetPassScreen;
 
 

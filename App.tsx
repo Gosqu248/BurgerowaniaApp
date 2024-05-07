@@ -12,6 +12,7 @@ import SplashScreen from 'react-native-splash-screen';
 import LoginScreen from './src/screens/LoginScreen';
 import SignScreen from './src/screens/SignScreen';
 import PasswordScreen from './src/screens/PasswordScreen';
+import ResetPassScreen from './src/screens/ResetPassScreen';
 
 
 
@@ -70,6 +71,12 @@ const App = () => {
                 name="Pass" 
                 component={PasswordScreen} 
                 options={{animation: 'ios'}}>
+            </Stack.Screen>
+
+            <Stack.Screen 
+              name="Reset" 
+              component={ResetPassScreen} 
+              options={{animation: 'slide_from_bottom'}}>
             </Stack.Screen>
 
         </Stack.Navigator>

@@ -1,10 +1,10 @@
 import { initializeApp } from "firebase/app";
-import { createUserWithEmailAndPassword, EmailAuthProvider, GoogleAuthProvider, initializeAuth, reauthenticateWithCredential, signInWithCredential, signInWithEmailAndPassword, updatePassword, User} from "firebase/auth";
+import { sendPasswordResetEmail, createUserWithEmailAndPassword, EmailAuthProvider, GoogleAuthProvider, initializeAuth, reauthenticateWithCredential, signInWithCredential, signInWithEmailAndPassword, updatePassword, User, getAuth} from "firebase/auth";
 import { NavigationProp } from "@react-navigation/native";
 import { Alert } from "react-native";
 import { GoogleSignin, statusCodes } from "@react-native-google-signin/google-signin";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useEffect } from "react";
+import { getDatabase, ref, set } from "firebase/database";
 
 
 const firebaseConfig = {
@@ -20,10 +20,6 @@ const firebaseConfig = {
 
 const FIREBASE_APP = initializeApp(firebaseConfig);
 const FIREBASE_AUTH = initializeAuth(FIREBASE_APP);
-
-GoogleSignin.configure({
-  webClientId: '413523460490-1ngt6htht82r7vp2jii7gifi9tj3t9r1.apps.googleusercontent.com',
-});
 
 
 export const signInWithEmail = async (
@@ -94,15 +90,12 @@ try {
 } 
 };
 
-export const signOut = async (navigation: NavigationProp<any>) => {
+export const signOutFromAcc = async (navigation: NavigationProp<any>) => {
   try {
 
     await FIREBASE_AUTH.signOut();
 
     await AsyncStorage.removeItem('email');
-
-
-    await GoogleSignin.signOut();
 
     Alert.alert('Wylogowano pomyślnie');
 
@@ -184,14 +177,44 @@ export const changePassword = async (
   }
 };
 
-export const signInWithGoogle = async () => {
+export const resetPassword = async (email: string) => {
   try {
+    await sendPasswordResetEmail(FIREBASE_AUTH, email);
+    Alert.alert('Wysłano link do zresetowania hasła');
+  } catch (error: any) {
+    let errorMessage = 'Błąd podczas resetowania hasła';
+
+    if (error.code === 'auth/invalid-email') {
+      errorMessage = 'Nieprawidłowy format adresu e-mail';
+    } else if (error.code === 'auth/user-not-found') {
+      errorMessage = 'Brak konta przypisanego do podanego adresu e-mail';
+    } else {
+      errorMessage = 'Wystąpił nieznany błąd podczas resetowania hasła';
+    }
+
+    console.log(error);
+    Alert.alert(errorMessage);
+  }
+}
+
+export const signInWithGoogle = async (navigation:any) => {
+  try {
+    GoogleSignin.configure({
+      webClientId: '413523460490-1ngt6htht82r7vp2jii7gifi9tj3t9r1.apps.googleusercontent.com',
+    });
+    
       await GoogleSignin.hasPlayServices();
       const {idToken} = await GoogleSignin.signIn();
       const credential = GoogleAuthProvider.credential(idToken);
-      console.log(credential);
       await signInWithCredential(FIREBASE_AUTH, credential);
-      
+
+      if( signInWithCredential(FIREBASE_AUTH, credential) !== null && signInWithCredential(FIREBASE_AUTH, credential) !== undefined) {  
+        await AsyncStorage.setItem('email', FIREBASE_AUTH.currentUser?.email as string);
+        console.log(FIREBASE_AUTH.currentUser?.email);
+        navigation.navigate('Tab');
+      }
+      Alert.alert('Zalogowano pomyślnie');
+
   } catch (error: any) {
     console.log('Google Sign-In Error:', error);
     if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -206,20 +229,4 @@ export const signInWithGoogle = async () => {
     }
   }
 };
-
-export async function onGoogleButtonPress() {
-  try {
-    await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true});
-
-    const { idToken, user } = await GoogleSignin.signIn();
-    Alert.alert('Zalogowano pomyślnie');
-
-    const googleCredential = GoogleAuthProvider.credential(idToken);
-    return signInWithCredential(FIREBASE_AUTH, googleCredential);
-  } catch(error: any) {
-    console.log(error);
-    Alert.alert('Błąd podczas logowania ' + error.message);
-  }
-}
-
 

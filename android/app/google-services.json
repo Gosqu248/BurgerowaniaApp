@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "413523460490",
+    "firebase_url": "https://burgerownia-248-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "burgerownia-248",
+    "storage_bucket": "burgerownia-248.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:413523460490:android:ead234068a5937914c4873",
+        "android_client_info": {
+          "package_name": "com.burgerownia"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "413523460490-f1eg9nen73mvefaevt6vgudhb8fk35gm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.burgerownia",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "413523460490-1ngt6htht82r7vp2jii7gifi9tj3t9r1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAm9XxU3jwlHBkJubLZIppineC5_B4bTkU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "413523460490-1ngt6htht82r7vp2jii7gifi9tj3t9r1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
