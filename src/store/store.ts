@@ -14,6 +14,7 @@ import NapojeData from '../data/NapojeData';
 import KebabData from '../data/KebabData';
 import MustTasteData from '../data/MustTasteData';
 
+
 export const useStore = create(
   persist(
     (set, get) => ({
@@ -259,6 +260,7 @@ export const useStore = create(
             state.CartList = [];
           }),
         ),
+        
     }),
     {
       name: 'Burgerownia-app',

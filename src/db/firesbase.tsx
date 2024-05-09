@@ -124,7 +124,6 @@ export const removeAccount = async (navigation: NavigationProp<any>) => {
 
       await AsyncStorage.removeItem('email');
 
-      await GoogleSignin.signOut();
 
       navigation.reset({
         index: 0,
